@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>随机色板</title>
+  <style type="text/css">
+    html,body,ul{margin: 0; padding: 0;}
+    li{list-style: none; }
+    .content{
+      padding: 20px;
+    }
+    .btn{
+      display: inline-block;
+      width: 200px;
+      line-height: 30px;
+      margin-bottom: 20px;
+      border: 1px solid;
+      text-align: center;
+      cursor: pointer;
+    }
+    #item li{
+        display: inline-block;
+        padding: 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+  </style>
+</head>
+<body>
+<div class="content">
+  <div id="startBtn" class="btn">开始生成随机色值</div>
+  <div id="stopBtn" class="btn">停止</div>
+  <ul id="item"></ul>
+</div>
+
+<script>
+  /* 色值范围 rgb [0-255] */
+  let timerId = null
+
+  // 生成随机数
+  function random(min, max) {
+    return Math.floor(Math.random() * (max + 1 - min) + min)
+  }
+  // 生成随机色值的li，并插入页面
+  /*function generate() {
+    let [r, g, b] = [random(0, 255), random(0, 255), random(0, 255)]
+    let li = document.createElement("li");
+    li.innerText = `rgb(${r},${g},${b})`;
+    li.style.backgroundColor = `rgb(${r},${g},${b})`
+    item.appendChild(li);
+  }*/
+  function generate() {
+    let arr = [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f']
+    let str = '#'
+
+    for(let i=0; i<6; i++){
+      let num = random(0, arr.length-1)
+      str += arr[num]
+    }
+    let li = document.createElement("li");
+    li.innerText = `${str}`;
+    li.style.backgroundColor = `${str}`
+    item.appendChild(li);
+  }
+
+  timerId = setInterval(generate, 1000)
+  startBtn.onclick = ()=>{
+    // 多次点击开始，clearInterval出现问题
+    clearInterval(timerId)
+    timerId = setInterval(generate, 1000)
+  }
+  stopBtn.onclick = ()=>{
+    clearInterval(timerId)
+  }
+</script>
+</body>
+</html>

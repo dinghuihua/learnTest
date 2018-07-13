@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>仿百度搜索</title>
+  <style type="text/css">
+    *{padding: 0; margin: 0;}
+    li{list-style: none}
+    .wrapper{
+      text-align: center;
+      margin: 0 auto;
+    }
+    .logo img{
+      width: 300px;
+    }
+    .input{
+      font-size: 0;
+      line-height: 40px;
+    }
+    .input input{
+      width: 600px;
+      height: 40px;
+      padding: 0 10px;
+      outline: none;
+      border: 1px solid #b8b8b8;
+      vertical-align: middle;
+    }
+    .btn{
+      display: inline-block;
+      width: 102px;
+      height: 40px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid #38f;
+      border-bottom: 1px solid #2e7ae5;
+      background-color: #38f;
+      font-size: 16px;
+      color: #fff;
+    }
+    .btn:hover{
+      background-color: #317ef3;
+      border-bottom: 1px solid #2868c8;
+      box-shadow: 1px 1px 1px #ccc;
+      cursor: pointer;
+    }
+    .search-wrapper{
+      position: relative;
+      display: inline-block;
+    }
+    .list{
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 42px;
+      width: 620px;
+      padding: 5px 0;
+      border: 1px solid #ccc;
+    }
+    .list li{
+      padding: 0 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .list li a{
+      color: #000;
+      text-decoration: none;
+    }
+    .list li:hover{
+      background-color: #f5f5f5;
+    }
+
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="logo">
+    <img src="images/bd_logo.png" alt="百度">
+  </div>
+  <div class="search-wrapper">
+    <div class="input">
+      <input type="text" id="searchInput">
+      <div class="btn" id="btn">百度一下</div>
+    </div>
+    <ul id="keyList" class="list"></ul>
+  </div>
+</div>
+
+
+<script>
+  var ipt  = document.getElementById('searchInput')
+  var keyList  = document.getElementById('keyList')
+  var btn  = document.getElementById('btn')
+
+  btn.onclick = function () {
+    if(ipt.value != ''){
+      window.location.href = `https://www.baidu.com/s?wd=${ipt.value}`
+    }
+  }
+
+  ipt.onblur = function () {
+    keyList.style.display = 'none'
+  }
+  ipt.onkeyup = function () {
+    // 当有内容输入的时候，都创建一个script标签获取数据
+    if(this.value != ''){
+      var oScript = document.createElement('script')
+      oScript.src = 'http://www.baidu.com/su?wd='+this.value+'&cb=cbFn';
+      document.body.appendChild(oScript);
+    }
+
+  }
+
+  function cbFn(res){
+    var data = res.s, html = ''
+    if(data.length>0){
+      keyList.style.display = 'block'
+      console.log(keyList)
+      for(let i = 0, len=data.length; i<len; i++){
+        html += `<li><a href="https://www.baidu.com/s?wd=${data[i]}">${data[i]}</a></li>`
+      }
+      keyList.innerHTML = html
+    }else{
+      keyList.style.display = 'none'
+    }
+  }
+</script>
+
+<!--<script src="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=1&cb=cbFn"></script>-->
+</body>
+</html>

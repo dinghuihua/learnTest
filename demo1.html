@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h2>统计字符串中字母出现的字数</h2>
+<script>
+  var str = 'abcdjjjjaaabbbd';
+
+  var count = str.split('').reduce((x,y)=>(x[y]++ || (x[y]=1), x), {})
+
+  console.log(count) //{a: 4, b: 4, c: 1, d: 2, j: 4}
+
+
+  var count2 = str.split('').reduce(getSum, {})
+
+  function getSum(x, y) {
+    if(x[y]){
+      x[y]++
+    }else{
+      x[y]=1
+    }
+    return x
+  }
+
+  console.log(count2)
+</script>
+</body>
+</html>

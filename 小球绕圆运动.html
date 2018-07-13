@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>小球绕圆运动</title>
+  <style type="text/css">
+    #box{
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      border: 1px solid #000;
+    }
+    #box .line-x{
+      position: absolute;
+      top: 200px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: #9cc2c9;
+    }
+    .line-y{
+      position: absolute;
+      top: 0;
+      left: 200px;
+      width: 1px;
+      height: 100%;
+      background-color: #9cc2c9;
+    }
+    #box .btn{
+      position: absolute;
+      right: -90px;
+      width: 80px;
+      line-height: 30px;
+      text-align: center;
+      cursor: pointer;
+    }
+    #box .btn1{
+      top: 100px;
+      border: 1px solid green;
+    }
+    #box .btn2{
+      top: 150px;
+      border: 1px solid red;
+    }
+    #bar{
+      position: absolute;
+      top: 195px;
+      left: 395px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #B80D57;
+    }
+  </style>
+</head>
+<body>
+<!--
+  角度转弧度 π/180 × 角度
+  弧度变角度 180/π × 弧度
+
+-->
+<div id="box">
+  <div class="line-x"></div>
+  <div class="line-y"></div>
+  <div id="bar"></div>
+  <button class="btn btn1" id="startBtn">Start</button>
+  <button class="btn btn2" id="stopBtn">Stop</button>
+</div>
+
+<script>
+  let deg = 0,
+      r = box.clientWidth / 2,
+      {PI, sin, cos} = Math,
+      timer = null;
+
+  function move() {
+    let rad = PI/180 * deg,
+        top = r - sin(rad) * r,
+        left = r + cos(rad) * r,
+        barR = bar.clientWidth/2;
+    bar.style.top = top - barR + 'px';
+    bar.style.left = left - barR + 'px';
+    deg += 4
+  }
+
+  startBtn.onclick = ()=>{
+    // 多次点击开始，clearInterval出现问题
+    if(timer != null){
+      return
+    }
+    timer = setInterval(move, 500)
+  }
+  stopBtn.onclick = ()=>{
+    clearInterval(timer)
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>常见的轮播</title>
+  <style type="text/css">
+    *{padding: 0; margin: 0;}
+    li{list-style: none;}
+    #banner-wrapper{
+      position: relative;
+      width: 800px;
+      height: 360px;
+      margin: 0 auto;
+    }
+    #box{
+      width: 100%;
+      height: 100%;
+    }
+    #box li{
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+    #box li.on{
+      display: block;
+    }
+    #pointer{
+      position: absolute;
+      bottom: 10px;
+      right: 100px;
+    }
+    #pointer li{
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: #ddd;
+    }
+    #pointer li.on{
+      background-color: #f60;
+    }
+    .btn{
+      position: absolute;
+      top: 0;
+      width: 50px;
+      height: 100%;
+      line-height: 360px;
+      font-size: 30px;
+      text-align: center;
+      background-color: rgba(0,0,0,.5);
+      color: #fff;
+      cursor: pointer;
+    }
+    #left{
+      left: 0;
+    }
+    #right{
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="banner-wrapper">
+  <ul id="box">
+    <li class="on" style="background: url(images/1.png)"></li>
+    <li style="background: url(images/2.png)"></li>
+    <li style="background: url(images/3.png)"></li>
+    <li style="background: url(images/4.png)"></li>
+  </ul>
+  <ul id="pointer">
+    <li class="on">1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+  </ul>
+  <div id="left" class="btn"> &lt; </div>
+  <div id="right" class="btn"> &gt; </div>
+</div>
+
+<script>
+  const wrapper = document.getElementById('banner-wrapper')
+  const banLi = box.getElementsByTagName('li')
+  const posLi = pointer.getElementsByTagName('li')
+  let timer = null
+  let index = 0
+
+  for (let i = 0; i < posLi.length; i++){
+    posLi[i].onmouseenter = function () {
+      posLi[index].classList.remove('on')
+      banLi[index].classList.remove('on')
+      index = i
+      this.classList.add('on')
+      banLi[i].classList.add('on')
+    }
+  }
+
+  let autoFn = () => {
+
+    banLi[index].classList.remove('on')
+    posLi[index].classList.remove('on')
+
+    index ++
+    index %= banLi.length
+
+    banLi[index].classList.add('on')
+    posLi[index].classList.add('on')
+
+  }
+
+  wrapper.onmouseenter = ()=>{
+    clearInterval(timer)
+  }
+  wrapper.onmouseleave = ()=>{
+    clearInterval(timer)
+    timer = setInterval(autoFn, 2000)
+  }
+
+  timer = setInterval(autoFn, 2000)
+
+  left.onclick = ()=>{
+    banLi[index].classList.remove('on')
+    posLi[index].classList.remove('on')
+
+
+    if (--index < 0){
+      index = banLi.length - 1
+    }
+
+    banLi[index].classList.add('on')
+    posLi[index].classList.add('on')
+  }
+
+  right.onclick = autoFn
+</script>
+</body>
+</html>

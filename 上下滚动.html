@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>上下滚动</title>
+  <style>
+    *{margin: 0; padding: 0}
+    li{ list-style: none; }
+    .wrapper{
+      width: 400px;
+      margin: 30px auto 0;
+      text-align: center;
+    }
+    #box{
+      position: relative;
+      height: 500px;
+      overflow: hidden;
+    }
+    .content{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+    .content li{
+      height: 50px;
+      line-height: 50px;
+      background-color: pink;
+    }
+    .content li:nth-child(odd){
+      background-color: #38f;
+    }
+    .btn{
+      line-height: 30px;
+      background-color: rgba(0,0,0,.8);
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="btn" id="top">往上移</div>
+  <div id="box">
+    <ul class="content">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>10</li>
+    </ul>
+  </div>
+  <div class="btn" id="bottom">往下移</div>
+</div>
+<script src="js/animation.js"></script>
+<script>
+  let topBtn = document.getElementById('top'),
+      bottomBtn = document.getElementById('bottom'),
+      content = document.getElementsByClassName('content')[0],
+      list = document.getElementsByTagName('li');
+  let totalH = parseFloat(getComputedStyle(content).height) 
+  console.log(totalH)    
+  console.log(getComputedStyle(list[list.length-1]).top)
+
+  // 移动的距离 == 最后一个li距离顶部的高度，则停止
+
+  let timeId = null
+  topBtn.onclick = function () {
+    
+    //clearInterval(timeId)
+    //timeId = setInterval(function () {
+      movingUp()
+    //}, 100)
+
+  }
+/*  topBtn.onmouseleave = function () {
+    clearInterval(timeId)
+  }*/
+  function movingUp() {
+    animation(content, {
+      data: {
+        top: -totalH
+      }
+    }, 2000, ()=>{
+      content.style.top = 0
+      console.log('动画结束')
+    })
+  
+  }
+
+
+</script>
+</body>
+</html>
