@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>移动端音乐播放器demo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,
+  maximum-scale=1.0, user-scalable=0, minimum-scale=1.0">
+
+  <script>
+    document.getElementsByTagName('html')[0].style.fontSize = document.documentElement.clientWidth/10 + 'px';
+  </script>
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <h3>爱不可及</h3>
+      <p>F ~ W 王菲 - 爱不可及</p>
+    </header>
+    <section class="singer">
+      <div class="br">
+        <img src="images/tx.jpg" alt="王菲">
+      </div>
+    </section>
+    <section class="progress">
+      <div class="bg"></div>
+      <div class="bar"></div>
+    </section>
+    <section class="btn-wrapper">
+      <div class="icon icon-prev"></div>
+      <div class="icon icon-play" id="control"></div>
+      <div class="icon icon-next"></div>
+    </section>
+    <audio src="mp3/wang.mp3" id="myMusic"></audio>
+  </div>
+
+  <script src="js/jquery-1.12.1.min.js"></script>
+  <script>
+    var $progress = $('.progress'), $bar = $('.progress .bar'), $bg = $('.progress .bg');
+    var myMusicEle = document.getElementById('myMusic')
+    var allWidth = $progress.width() - $bar.width();
+
+    function play() {
+      myMusicEle.play();
+      $('.singer').addClass('rotate')
+    }
+
+    function pause() {
+      myMusicEle.pause();
+      $('.singer').removeClass('rotate')
+    }
+
+    $('#control').click(function () {
+      if($(this).hasClass('icon-play')){
+        $(this).removeClass('icon-play').addClass('icon-pause');
+        play()
+
+      }else{
+        $(this).removeClass('icon-pause').addClass('icon-play');
+        pause()
+      }
+    })
+
+    /*
+    *  获取歌曲当前播放的时间（currentTime）及歌曲的总时间（duration）
+    *    = bg的长度(????) / progress总长度(allWidth)
+    *
+    */
+
+    // 当音乐的播放时间发生改变时就会触发timeupdate
+    myMusicEle.addEventListener('timeupdate', function () {
+
+      var scale = myMusicEle.currentTime/myMusicEle.duration;
+
+      var _left = allWidth * scale;
+
+
+      $bar.css("left", _left + "px");
+      $bg.css('width', _left + 'px');
+    })
+    // 拖动小滑块
+    $bar.get(0).addEventListener('touchstart', function (e) {
+
+      // 获取手指按下去的坐标位置
+      var x = e.changedTouches[0].pageX - $bar.offset().left; // 偏移量
+      document.addEventListener('touchmove', function (e) {
+        e.preventDefault()
+        var l = e.changedTouches[0].pageX,
+            _l = l - x - $progress.offset().left;
+        if(_l < 0){
+          _l = 0;
+        }
+        if(_l > allWidth){
+          _l = allWidth;
+        }
+
+        $bar.css("left", _l + "px");
+        $bg.css('width', _l + 'px');
+
+        myMusicEle.currentTime = _l/allWidth * myMusicEle.duration;
+        console.log(_l/allWidth * myMusicEle.duration)
+        console.log(myMusicEle.currentTime)       // 拖动后currentTime输出为0，导致总是回到原点。 可是   _l/allWidth * myMusicEle.duration 有值呀，不为0啊， 为什么？？
+
+      })
+      // 阻止浏览器默认滑动事件
+      //return false;
+    })
+
+ /*   $bar.get(0).addEventListener('touchend', function () {
+      console.log('22222222222')
+      document.removeEventListener('touchmove', function () {
+        console.log('移除了move事件')
+      })
+    })*/
+
+
+  </script>
+</body>
+</html>
